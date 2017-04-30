@@ -36,10 +36,18 @@ grad = zeros(size(theta));
 %           grad = grad + YOUR_CODE_HERE (using the temp variable)
 %
 
+J= (((-y')*(log(sigmoid(X*theta))))-(((1.-y)')* (log(1.-(sigmoid(X*theta))))))/size(X,1);
+%regularization step
+theta_temp=theta(2:(size(theta,1)),1);
+J=J+ ((lambda/(2*m))*(theta_temp'*theta_temp));
 
 
+grad=(1/m)*X'*(sigmoid(X*theta)-y);
 
-
+%regularization step
+temp=((lambda/m).*theta_temp);
+temp=[0;temp];
+grad=grad+temp;
 
 
 
