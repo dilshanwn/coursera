@@ -61,24 +61,43 @@ Theta2_grad = zeros(size(Theta2));
 %               the regularization separately and then add them to Theta1_grad
 %               and Theta2_grad from Part 2.
 %
+a1=[ones(m, 1) X];
+
+
+z2=(a1*Theta1');
+a2=[ones(m, 1) sigmoid(z2)];
+
+z3=(a2*Theta2');
+
+a3=sigmoid(z3);
+
+all_combos = eye(num_labels);    
+y_matrix = all_combos(y,:) ;
 
 
 
+J= sum(sum(-1*((y_matrix.*log(a3))+((1-y_matrix).*log(1-a3)))))/m;
+
+
+Theta1_new=Theta1(:,2:end);
+Theta2_new=Theta2(:,2:end);
+
+reg = (sum(sum(Theta1_new.*Theta1_new)) +sum(sum(Theta2_new.*Theta2_new)))*(lambda/(2*m));
+
+J = J + reg;
+
+
+delta3=a3-y_matrix;
+
+delta2= (delta3*Theta2_new).*(sigmoidGradient(z2));
+
+reg1=[zeros(size(Theta1_new,1),1),((lambda/m)*Theta1_new)];
+reg2=[zeros(size(Theta2_new,1),1),((lambda/m)*Theta2_new)];
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+Theta1_grad=  (delta2'*a1)*(1/m)+reg1;
+Theta2_grad=  (delta3'*a2)*(1/m)+reg2;
 
 % -------------------------------------------------------------
 
