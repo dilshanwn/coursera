@@ -20,13 +20,16 @@ grad = zeros(size(theta));
 %
 
 
+J=(sum(((X*theta)-y).^2)*(1/(2*m)));
 
 
+theta_temp=theta(2:(size(theta,1)),1);
+J=J+ ((lambda/(2*m))*(theta_temp'*theta_temp));
 
-
-
-
-
+grad=(1/m)*X'*((X*theta)-y);
+temp=((lambda/m).*theta_temp);
+temp=[0;temp];
+grad=grad+temp;
 
 
 
